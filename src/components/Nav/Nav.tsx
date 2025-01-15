@@ -62,10 +62,10 @@ export default function Nav() {
                 <Activity message={message} key={i} />
               ))
             ) : (
-            {/*<div className="flex h-full w-full flex-col items-center justify-center">
+            <div className="flex h-full w-full flex-col items-center justify-center">
                 <p className="text-xl">¯\_(ツ)_/¯</p>
                 <p className="text-sm">Wow, such empty...</p>
-              </div>*/}
+              </div>
             )}
           </ul>
           {greeting && (
