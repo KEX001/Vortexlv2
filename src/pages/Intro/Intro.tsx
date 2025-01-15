@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import reactlogo, tailwindlogo if needed
 import bg480 from "../../assets/landing/landing-480px.webp";
 import bg640 from "../../assets/landing/landing-640px.webp";
 import bg768 from "../../assets/landing/landing-768px.webp";
@@ -81,7 +80,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <Icons.Telegram className="size-4" />
+            <img src="/Telegram_black.png" alt="Telegram" className="size-4" />
           </a>
           <a
             aria-label="Instagram"
@@ -90,7 +89,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <Icons.Instagram className="size-4" />
+            <img src="/Instagram_black.png" alt="Instagram" className="size-4" />
           </a>
           <a
             aria-label="Twitter"
@@ -99,7 +98,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <Icons.Twitter className="size-4" />
+            <img src="/Twitter_black.png" alt="Twitter" className="size-4" />
           </a>
         </div>
 
