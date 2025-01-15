@@ -1,7 +1,7 @@
 import { memo, Suspense, useEffect } from "react";
 import { useBoundStore } from "../../store/store";
 import { Link, useNavigate } from "react-router-dom";
-import { ActivityType, TrackDetails } from "../../types/GlobalTypes";
+import { TrackDetails } from "../../types/GlobalTypes";
 import Loading from "./Loading";
 import Section from "../../components/Section/Section";
 import play from "../../assets/icons8-play.svg";
