@@ -16,7 +16,6 @@ import { getTimelyData, getWidgetData } from "../../api/requests";
 import { genres, timelyData } from "../../utils/utils";
 import logo from "../../assets/sound-waves.png";
 import songfallback from "../../assets/icons8-song-fallback.png";
-import notif from "../../assets/bell-svgrepo-com.svg";
 
 export default function Home() {
   const changeGreeting = useBoundStore((state) => state.changeGreeting);
@@ -26,8 +25,6 @@ export default function Home() {
   const setIsPlaying = useBoundStore((state) => state.setIsPlaying);
   const setNowPlaying = useBoundStore((state) => state.setNowPlaying);
   const setQueue = useBoundStore((state) => state.setQueue);
-  const notifications = useBoundStore((state) => state.notifications);
-  const setNotifications = useBoundStore((state) => state.setNotifications);
   const navigate = useNavigate();
 
   const { isPending } = useQuery({
@@ -39,29 +36,15 @@ export default function Home() {
   const setGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 6 && hour <= 12) {
-      changeGreeting("Good morning");
+      changeGreeting("☀️ Good morning! Shine bright like the sun ☀️");
     } else if (hour > 12 && hour <= 15) {
-      changeGreeting("Good afternoon");
+      changeGreeting("🌤 Good afternoon! Keep your energy glowing 🌤");
     } else if (hour > 15 && hour <= 18) {
-      changeGreeting("Good evening");
+      changeGreeting("🌅 Good evening! Let the golden hour inspire you 🌅");
     } else {
-      changeGreeting("Good night");
+      changeGreeting("🌙 Good night! Rest under the sparkling stars 🌙");
     }
   };
-
-  const Activity = ({ message }: ActivityType) => {
-    return (
-      <li className="mb-0.5 line-clamp-1 flex h-[35px] w-full flex-shrink-0 items-center justify-start overflow-hidden text-ellipsis whitespace-nowrap rounded-lg bg-black px-2">
-        <p className="mx-1 line-clamp-1 w-auto text-ellipsis text-xs font-semibold text-neutral-300">
-          {message}
-        </p>
-      </li>
-    );
-  };
-
-  function toggleNotifs() {
-    setNotifications(!notifications);
-  }
 
   useEffect(() => {
     if (greeting === "") setGreeting();
@@ -175,52 +158,19 @@ export default function Home() {
   });
 
   const HomeComponent = () => {
-    const recents = useBoundStore((state) => state.recents);
-
     return (
       <div className="h-auto w-full scroll-smooth bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-black via-neutral-950 to-neutral-700">
         <div className="h-auto max-h-max w-full pt-2 xl:w-full">
-          <div className="-mb-0.5 flex h-auto w-full items-center justify-between px-4 sm:hidden">
-            <h1 className="text-left text-xl font-semibold text-white sm:hidden md:text-2xl">
+          <div className="-mb-0.5 flex h-auto w-full items-center justify-between px-4">
+            <h1 className="text-left text-2xl font-semibold text-white animate-pulse">
               {greeting}
             </h1>
-            <div className="flex w-20 items-center justify-between">
-              <button
-                type="button"
-                style={{ border: "none", outline: "none" }}
-                onClick={toggleNotifs}
-                className="relative h-[25px] w-[25px] bg-transparent p-0"
-              >
-                <img
-                  src={notif}
-                  alt="notification"
-                  className="h-[25px] w-[25px]"
-                />
-                {recents.activity.length > 0 && !notifications && (
-                  <p className="absolute -top-0.5 right-0 h-2 w-2 rounded-full bg-emerald-400"></p>
-                )}
-              </button>
-              <ul
-                className={`$${notifications ? "absolute" : "hidden"} right-20 top-11 z-20 flex h-40 w-[65%] flex-col items-start justify-start overflow-y-scroll rounded-b-xl rounded-tl-xl bg-neutral-900 p-1`}
-              >
-                {recents.activity.length > 0 ? (
-                  recents.activity.map((message: string, i: number) => (
-                    <Activity message={message} key={i} />
-                  ))
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center">
-                    <p className="text-xl">¯\_(ツ)_/¯</p>
-                    <p className="text-sm">Wow, such empty...</p>
-                  </div>
-                )}
-              </ul>
-              <img
-                loading="lazy"
-                src={logo}
-                alt="logo"
-                className="-mb-0.5 rounded-full"
-              />
-            </div>
+            <img
+              loading="lazy"
+              src={logo}
+              alt="logo"
+              className="-mb-0.5 rounded-full"
+            />
           </div>
           <Widget />
           <h1 className="-my-1 px-4 text-left text-xl font-semibold text-white">
