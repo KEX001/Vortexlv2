@@ -107,7 +107,7 @@ export default function Intro() {
             onClick={toHome}
             className="transition-transform rounded-lg bg-purple-600 px-6 py-2 text-sm font-bold text-white hover:scale-105 hover:bg-purple-500"
           >
-            Next >
+            Next ➤
           </Link>
         </div>
 
