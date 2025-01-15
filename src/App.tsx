@@ -77,7 +77,7 @@ export default function App() {
       <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
         {showText && (
           <p className="text-xl font-semibold text-emerald-500">
-            {loadingText} {getRandomEmoticons()}
+            {loadingText}
           </p>
         )}
         {showSpinner && (
