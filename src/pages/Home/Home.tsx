@@ -36,13 +36,13 @@ export default function Home() {
   const setGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 6 && hour <= 12) {
-      changeGreeting("☀️ Good morning! Shine bright like the sun ☀️");
+      changeGreeting("Shine bright like the sun ☀️");
     } else if (hour > 12 && hour <= 15) {
-      changeGreeting("🌤 Good afternoon! Keep your energy glowing 🌤");
+      changeGreeting("Keep your energy glowing 🌤");
     } else if (hour > 15 && hour <= 18) {
-      changeGreeting("🌅 Good evening! Let the golden hour inspire you 🌅");
+      changeGreeting("Let the golden hour inspire you 🌅");
     } else {
-      changeGreeting("🌙 Good night! Rest under the sparkling stars 🌙");
+      changeGreeting("Rest under the sparkling stars 🌙");
     }
   };
 
