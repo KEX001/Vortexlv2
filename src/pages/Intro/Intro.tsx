@@ -51,9 +51,9 @@ export default function Intro() {
       }}
       className="flex h-full w-full items-center justify-center shadow-inner shadow-black"
     >
-      <div className="relative mx-auto flex h-auto w-[90%] max-w-lg flex-col items-center rounded-lg bg-neutral-900 pt-6 pb-4 font-mono shadow-md">
+      <div className="relative mx-auto flex h-auto w-[calc(100%-10%)] flex-col items-center rounded-lg bg-neutral-900 pt-6 pb-4 font-mono sm:w-[550px] shadow-md">
         {/* Header Section */}
-        <div className="flex flex-col items-center w-full px-6">
+        <div className="flex flex-col items-start w-full pl-6">
           <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
             Vᴏʀᴛᴇx ⍱
           </h2>
@@ -63,7 +63,7 @@ export default function Intro() {
         </div>
 
         {/* Features List */}
-        <ul className="mt-4 mb-2 w-full list-disc px-10 text-left text-sm font-medium">
+        <ul className="mt-4 mb-6 w-full list-disc px-10 text-left text-sm font-medium">
           <li className="my-2 text-white">A variety of songs from artists, albums, and playlists</li>
           <li className="my-2 text-white">Search across multiple artists, albums, and playlists</li>
           <li className="my-2 text-white">Save songs as favorites and craft unique playlists</li>
@@ -71,8 +71,19 @@ export default function Intro() {
           <li className="my-2 text-white">Activity history support</li>
         </ul>
 
+        {/* Action Button */}
+        <div className="mt-4 flex w-full justify-center">
+          <Link
+            to="/home"
+            onClick={toHome}
+            className="transition-transform rounded-lg bg-purple-600 px-6 py-2 text-sm font-bold text-white hover:scale-105 hover:bg-purple-500"
+          >
+            Next
+          </Link>
+        </div>
+
         {/* Social Links */}
-        <div className="flex justify-center gap-6 mt-4">
+        <div className="flex justify-center gap-4 mt-6">
           <a
             aria-label="Telegram"
             href="https://t.me/STORM_TECHH"
@@ -100,17 +111,6 @@ export default function Intro() {
           >
             <img src="/Twitter_black.png" alt="Twitter" className="w-6 h-6" />
           </a>
-        </div>
-
-        {/* Action Button */}
-        <div className="mt-6 flex w-full justify-center">
-          <Link
-            to="/home"
-            onClick={toHome}
-            className="transition-transform rounded-lg bg-purple-600 px-6 py-2 text-sm font-bold text-white hover:scale-105 hover:bg-purple-500"
-          >
-            Next
-          </Link>
         </div>
 
         {/* Footer */}
