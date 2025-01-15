@@ -55,7 +55,7 @@ export default function Intro() {
         {/* Header Section */}
         <div className="flex flex-col items-start w-full pl-6">
           <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
-            Vᴏʀᴛᴇx ⍱
+            Vortex 🎶
           </h2>
           <h2 className="mt-2 border-b-2 border-purple-600 text-lg font-bold text-white md:text-xl">
             Attributes
@@ -71,67 +71,50 @@ export default function Intro() {
           <li className="my-2 text-white">Activity history support</li>
         </ul>
 
-        {/* Action Button */}
-        <div className="mt-4 flex w-full justify-center">
+        {/* Social Links and Action Button */}
+        <div className="flex w-full justify-between items-center px-10">
+          <div className="flex gap-4">
+            <a
+              aria-label="Telegram"
+              href="https://t.me/STORM_TECHH"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <img src="/Telegram_black.png" alt="Telegram" className="w-6 h-6" />
+            </a>
+            <a
+              aria-label="Instagram"
+              href="https://www.instagram.com/kxunal._/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <img src="/Instagram_black.png" alt="Instagram" className="w-6 h-6" />
+            </a>
+            <a
+              aria-label="Twitter"
+              href="https://twitter.com/kxunall"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <img src="/Twitter_black.png" alt="Twitter" className="w-6 h-6" />
+            </a>
+          </div>
           <Link
             to="/home"
             onClick={toHome}
             className="transition-transform rounded-lg bg-purple-600 px-6 py-2 text-sm font-bold text-white hover:scale-105 hover:bg-purple-500"
           >
-            Next
+            Next >
           </Link>
-        </div>
-
-        {/* Social Links */}
-        <div className="flex justify-center gap-4 mt-6">
-          <a
-            aria-label="Telegram"
-            href="https://t.me/STORM_TECHH"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="duration-200 hover:text-foreground"
-          >
-            <img src="/Telegram_black.png" alt="Telegram" className="w-6 h-6" />
-          </a>
-          <a
-            aria-label="Instagram"
-            href="https://www.instagram.com/kxunal._/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="duration-200 hover:text-foreground"
-          >
-            <img src="/Instagram_black.png" alt="Instagram" className="w-6 h-6" />
-          </a>
-          <a
-            aria-label="Twitter"
-            href="https://twitter.com/kxunall"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="duration-200 hover:text-foreground"
-          >
-            <img src="/Twitter_black.png" alt="Twitter" className="w-6 h-6" />
-          </a>
         </div>
 
         {/* Footer */}
         <footer className="mt-6 w-full border-t border-neutral-800">
           <p className="py-3 text-center text-sm font-medium text-neutral-400">
-            Developers
-          </p>
-          <p className="py-3 text-center text-sm font-medium text-neutral-400">
-            <a
-              href="https://t.me/ll_KEX_ll"
-              className="font-bold text-teal-500 hover:text-teal-400"
-            >
-              Kunal
-            </a>{" "}
-            &amp;{" "}
-            <a
-              href="https://t.me/interstellarXd"
-              className="font-bold text-teal-500 hover:text-teal-400"
-            >
-              Prakhar
-            </a>
+            By Team Vortex Ⓥ
           </p>
         </footer>
       </div>
