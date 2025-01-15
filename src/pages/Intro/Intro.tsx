@@ -51,9 +51,9 @@ export default function Intro() {
       }}
       className="flex h-full w-full items-center justify-center shadow-inner shadow-black"
     >
-      <div className="relative mx-auto flex h-auto w-[calc(100%-10%)] flex-col items-center rounded-lg bg-neutral-900 pt-6 pb-4 font-mono sm:w-[550px] shadow-md">
+      <div className="relative mx-auto flex h-auto w-[90%] max-w-lg flex-col items-center rounded-lg bg-neutral-900 pt-6 pb-4 font-mono shadow-md">
         {/* Header Section */}
-        <div className="flex flex-col items-start w-full pl-6">
+        <div className="flex flex-col items-center w-full px-6">
           <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
             Vᴏʀᴛᴇx ⍱
           </h2>
@@ -72,7 +72,7 @@ export default function Intro() {
         </ul>
 
         {/* Social Links */}
-        <div className="flex justify-center gap-4 mt-4">
+        <div className="flex justify-center gap-6 mt-4">
           <a
             aria-label="Telegram"
             href="https://t.me/STORM_TECHH"
