@@ -112,11 +112,11 @@ export default function Intro() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-6 w-full border-t border-neutral-800">
+        {/*<footer className="mt-6 w-full border-t border-neutral-800">
           <p className="py-3 text-center text-sm font-medium text-neutral-400">
             By Team Vortex Ⓥ
           </p>
-        </footer>
+        </footer>*/}
       </div>
     </div>
   );
