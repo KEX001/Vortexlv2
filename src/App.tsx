@@ -42,10 +42,14 @@ export default function App() {
 
   const MainFallback = () => {
     useEffect(() => {
-      // Keep the page loading for 3 minutes (180 seconds)
+      // Keep the page loading for 1 to 2 minutes (between 60 and 120 seconds)
+      const minTime = 60000; // 1 minute
+      const maxTime = 120000; // 2 minutes
+      const randomTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+
       const timeout = setTimeout(() => {
-        // Any action after 3 minutes (if needed)
-      }, 180000); // 3 minutes
+        // Any action after the compulsory waiting time (if needed)
+      }, randomTime);
 
       return () => {
         clearTimeout(timeout);
@@ -53,12 +57,14 @@ export default function App() {
     }, []);
 
     return (
-      <div className="flex items-center justify-center h-full w-full bg-neutral-800">
-        <img
-          src="https://github.com/KEX001/Vortexlv2/blob/master/src/assets/icons8-loading.gif?raw=true"
-          alt="Loading"
-          className="h-32 w-32"
-        />
+      <div className="flex items-center justify-center h-full w-full bg-black">
+        <div className="bg-black p-8 rounded-lg flex flex-col items-center">
+          <img
+            src="https://github.com/KEX001/Vortexlv2/blob/master/public/Ripple%401x-1.3s-200px-200px.gif?raw=true"
+            alt="Loading"
+            className="h-32 w-32"
+          />
+        </div>
       </div>
     );
   };
