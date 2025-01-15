@@ -47,28 +47,39 @@ export default function App() {
     "○( ＾皿＾)っ Hehehe…",
   ];
 
-  {/*function getRandomEmoticons() {
+  function getRandomEmoticons() {
     return emoticons[Math.floor(Math.random() * emoticons.length)];
   }*/}
 
   const MainFallback = () => {
     const [loadingText, setLoadingText] = useState("Loading your vibes, please wait...");
     const [showSpinner, setShowSpinner] = useState(false);
+    const [showText, setShowText] = useState(false);
 
     useEffect(() => {
-      // Set the spinner to appear after 8 seconds
-      const timeout = setTimeout(() => {
-        setShowSpinner(true);
-        setLoadingText("Your vibes are almost here!");
+      // Initially, show only text for a few seconds, then show the spinner
+      const timeout1 = setTimeout(() => {
+        setShowText(true); // Show text after 2 seconds
+      }, 2000); // 2 seconds
+
+      const timeout2 = setTimeout(() => {
+        setShowSpinner(true); // Show the spinner after 3 seconds
+        setLoadingText("Your vibes are almost here!"); // Change text after 8 seconds
       }, 8000); // 8 seconds
 
-      // Cleanup on unmount
-      return () => clearTimeout(timeout);
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+      };
     }, []);
 
     return (
       <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
-        <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
+        {showText && (
+          <p className="text-xl font-semibold text-emerald-500">
+            {loadingText} {getRandomEmoticons()}
+          </p>
+        )}
         {showSpinner && (
           <div className="loader-4">
             <div className="box1"></div>
