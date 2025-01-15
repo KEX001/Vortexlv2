@@ -41,13 +41,11 @@ export default function App() {
   );
 
   const MainFallback = () => {
-    const [loadingText, setLoadingText] = useState("First launch takes time...");
-
     useEffect(() => {
-      // After 1 minute (60 seconds), change the message
+      // Keep the page loading for 3 minutes (180 seconds)
       const timeout = setTimeout(() => {
-        setLoadingText("Your vibes are almost here!"); // Optional message change after 1 minute
-      }, 60000); // 60 seconds
+        // Any action after 3 minutes (if needed)
+      }, 180000); // 3 minutes
 
       return () => {
         clearTimeout(timeout);
@@ -55,15 +53,12 @@ export default function App() {
     }, []);
 
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="loader-4">
-            <div className="box1"></div>
-            <div className="box2"></div>
-            <div className="box3"></div>
-          </div>
-          <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
-        </div>
+      <div className="flex items-center justify-center h-full w-full bg-neutral-800">
+        <img
+          src="https://github.com/KEX001/Vortexlv2/blob/master/src/assets/icons8-loading.gif?raw=true"
+          alt="Loading"
+          className="h-32 w-32"
+        />
       </div>
     );
   };
