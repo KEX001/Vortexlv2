@@ -44,10 +44,8 @@ export default function Home() {
       changeGreeting("Good afternoon");
     } else if (hour > 15 && hour <= 18) {
       changeGreeting("Good evening");
-    } else if (hour > 18 && hour < 6) {
-      changeGreeting("Good night");
     } else {
-      changeGreeting("Jump back in");
+      changeGreeting("Good night");
     }
   };
 
@@ -70,7 +68,6 @@ export default function Home() {
     timelyData.forEach((obj: { id: number; timely: string }) => {
       getTimelyData(obj.id, obj.timely);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const Widget = memo(() => {
@@ -81,36 +78,39 @@ export default function Home() {
     ) {
       e.preventDefault();
       e.stopPropagation();
-      setQueue({
-        id: widget?.id || "",
-        name: widget?.name || "",
-        image: widget?.image || [],
-        songs: widget?.songs || [],
-      });
-      widget !== null && setNowPlaying(widget.songs[0]);
-      setIsPlaying(true);
+      if (widget) {
+        setQueue({
+          id: widget.id || "",
+          name: widget.name || "",
+          image: widget.image || [],
+          songs: widget.songs || [],
+        });
+        setNowPlaying(widget.songs?.[0]);
+        setIsPlaying(true);
+      }
+    }
+
+    if (!widget) {
+      return <p>No widget data available</p>;
     }
 
     return (
       <div className="h-auto max-h-max w-full px-3.5">
         <section className="relative z-0 mx-auto my-3 mb-7 flex h-80 w-full flex-col overflow-hidden rounded-2xl bg-transparent sm:flex-row">
           <img
-            src={widget?.image[2]?.url || songfallback}
+            src={widget.image?.[2]?.url || songfallback}
             alt="img"
             width={320}
             height={320}
             className="h-auto w-auto flex-shrink-0 bg-neutral-700 sm:z-10 sm:h-[320px] sm:w-[320px] sm:rounded-xl"
-            onClick={() => widget?.id && navigate(`/playlists/${widget.id}`)}
+            onClick={() => widget.id && navigate(`/playlists/${widget.id}`)}
           />
           <div className="absolute right-2.5 top-[105px] z-20 flex h-auto w-[95%] items-end justify-between sm:left-0 sm:top-[268px] sm:h-12 sm:w-[320px] sm:justify-end sm:p-2 md:p-2 md:py-1">
             <p className="left-0 top-0 line-clamp-1 h-auto w-[80%] pl-1 text-xl font-bold text-white sm:hidden">
-              {widget?.name}
+              {widget.name}
             </p>
             <button
-              style={{
-                outline: "none",
-                border: "1px solid #000",
-              }}
+              style={{ outline: "none", border: "1px solid #000" }}
               onClick={(e) => (nowPlaying.isPlaying ? setIsPlaying(false) : setNowPlayingQueue(e))}
               className="rounded-full bg-emerald-500 p-2"
             >
@@ -125,7 +125,7 @@ export default function Home() {
             id="widget-container"
             className="absolute bottom-1.5 left-1.5 h-[158px] w-[96.5%] list-none overflow-x-hidden overflow-y-scroll rounded-xl bg-neutral-900 sm:static sm:ml-3 sm:mt-0 sm:h-full"
           >
-            {widget?.songs.length > 0 ? (
+            {widget.songs?.length > 0 ? (
               widget.songs.map((song: TrackDetails, i: number) => (
                 <Song {...song} key={i} />
               ))
