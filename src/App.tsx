@@ -47,9 +47,9 @@ export default function App() {
     "○( ＾皿＾)っ Hehehe…",
   ];
 
-  function getRandomEmoticons() {
+  {/*function getRandomEmoticons() {
     return emoticons[Math.floor(Math.random() * emoticons.length)];
-  }
+  }*/}
 
   const MainFallback = () => {
     const [loadingText, setLoadingText] = useState("Loading your vibes, please wait...");
