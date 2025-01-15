@@ -40,46 +40,25 @@ export default function App() {
     ),
   );
 
-  {/*const emoticons = [
-    "(👉ﾟヮﾟ)👉",
-    "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
-    "ヾ(⌐■_■)ノ♪",
-    "○( ＾皿＾)っ Hehehe…",
-  ];
-
-  function getRandomEmoticons() {
-    return emoticons[Math.floor(Math.random() * emoticons.length)];
-  }*/}
-
   const MainFallback = () => {
     const [loadingText, setLoadingText] = useState("Loading your vibes, please wait...");
     const [showSpinner, setShowSpinner] = useState(false);
-    const [showText, setShowText] = useState(false);
 
     useEffect(() => {
-      // Initially, show only text for a few seconds, then show the spinner
-      const timeout1 = setTimeout(() => {
-        setShowText(true); // Show text after 2 seconds
-      }, 2000); // 2 seconds
-
-      const timeout2 = setTimeout(() => {
-        setShowSpinner(true); // Show the spinner after 3 seconds
-        setLoadingText("Your vibes are almost here!"); // Change text after 8 seconds
-      }, 8000); // 8 seconds
+      // Show spinner immediately, ensure the user waits for 10 seconds before content loads
+      const timeout = setTimeout(() => {
+        setShowSpinner(true); // Display the spinner after 0 seconds
+        setLoadingText("Your vibes are almost here!"); // Optional message change after 10 seconds
+      }, 10000); // 10 seconds
 
       return () => {
-        clearTimeout(timeout1);
-        clearTimeout(timeout2);
+        clearTimeout(timeout);
       };
     }, []);
 
     return (
       <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
-        {showText && (
-          <p className="text-xl font-semibold text-emerald-500">
-            {loadingText}
-          </p>
-        )}
+        <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
         {showSpinner && (
           <div className="loader-4">
             <div className="box1"></div>
