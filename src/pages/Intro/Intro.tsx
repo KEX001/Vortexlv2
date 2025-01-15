@@ -68,49 +68,51 @@ export default function Intro() {
           {/* Header Section */}
           <div className="flex flex-col h-20 w-full items-start justify-between pl-6">
             <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
-              LowKey Music
+              Vᴏʀᴛᴇx ⍱
             </h2>
             <h2 className="mt-2 border-b-2 border-purple-600 text-lg font-bold text-white md:text-xl">
-              Features
+              Attributes
             </h2>
           </div>
 
           {/* Features List */}
           <ul className="mt-4 mb-2 w-full list-disc border-neutral-900 px-10 text-left text-sm font-medium">
-            <li className="my-2 text-white">
-              Tracks from diverse artists/albums/playlists
-            </li>
-            <li className="my-2 text-white">
-              Multi search artists/albums/playlists
-            </li>
-            <li className="my-2 text-white">
-              Add favorites and playlist creation
-            </li>
-            <li className="my-2 text-white">
-              Recent listening history support
-            </li>
-            <li className="my-2 text-white">Activity support</li>
+            <li className="my-2 text-white">A variety of songs from artists, albums, and playlists</li>
+            <li className="my-2 text-white">Search across multiple artists, albums, and playlists</li>
+            <li className="my-2 text-white">Save songs as favorites and craft unique playlists</li>
+            <li className="my-2 text-white">Keep record of recent music played</li>
+            <li className="my-2 text-white">Activity history support</li>
           </ul>
 
-          {/* Technologies Used */}
-          <div className="w-full px-6">
-            <h2 className="mb-3 w-min whitespace-nowrap border-b-2 border-purple-600 text-lg font-bold text-white md:text-xl">
-              Technologies used
-            </h2>
-            <ul className="flex flex-wrap gap-4">
-              <li className="flex items-center text-sm font-bold text-white">
-                <p className="pr-1">React</p>
-                <img src={reactlogo} className="h-5 w-5" alt="React logo" />
-              </li>
-              <li className="flex items-center text-sm font-bold text-white">
-                <p className="pr-1">TailwindCSS</p>
-                <img src={tailwindlogo} className="h-5 w-5" alt="TailwindCSS logo" />
-              </li>
-              <li className="flex items-center text-sm font-bold text-white">
-                <p className="pr-1">Vite</p>
-                <img src="/vite.svg" className="h-5 w-5" alt="Vite logo" />
-              </li>
-            </ul>
+          {/* Social Links */}
+          <div className="flex justify-center gap-4 text-muted-foreground md:mt-4">
+            <a
+              aria-label="Telegram"
+              href="https://t.me/STORM_TECHH"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <Icons.Telegram className="size-4" />
+            </a>
+            <a
+              aria-label="Instagram"
+              href="https://www.instagram.com/kxunal._/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <Icons.Instagram className="size-4" />
+            </a>
+            <a
+              aria-label="Twitter"
+              href="https://twitter.com/kxunall"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="duration-200 hover:text-foreground"
+            >
+              <Icons.Twitter className="size-4" />
+            </a>
           </div>
 
           {/* Action Button */}
@@ -120,19 +122,28 @@ export default function Intro() {
               onClick={toHome}
               className="transition-transform rounded-lg bg-purple-600 px-6 py-2 text-sm font-bold text-white hover:scale-105 hover:bg-purple-500"
             >
-              Check it out
+              Next
             </Link>
           </div>
 
           {/* Footer */}
           <footer className="mt-6 w-full border-t border-neutral-800">
             <p className="py-3 text-center text-sm font-medium text-neutral-400">
-              Made with <span className="text-red-500">❤</span> by
+              Developers
+            </p>
+            <p className="py-3 text-center text-sm font-medium text-neutral-400">
               <a
-                href="https://github.com/tejas-git64"
+                href="https://t.me/ll_KEX_ll"
                 className="font-bold text-teal-500 hover:text-teal-400"
               >
-                Tej
+                Kunal
+              </a>{" "}
+              &amp;{" "}
+              <a
+                href="https://t.me/interstellarXd"
+                className="font-bold text-teal-500 hover:text-teal-400"
+              >
+                Prakhar
               </a>
             </p>
           </footer>
