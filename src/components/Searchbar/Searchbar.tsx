@@ -31,7 +31,7 @@ export default function Searchbar() {
           onChange={(e) => {
             setQuery(e.target.value);
           }}
-          placeholder="Search for songs, albums, playlists or artists"
+          placeholder="Lᴏᴏᴋɪɴɢ Fᴏʀ A Tᴜɴᴇ ?"
           className="placeholder: h-full w-full border-none bg-neutral-700 px-2 font-semibold text-neutral-300 outline-none placeholder:font-medium placeholder:text-neutral-400"
         />
       </div>
