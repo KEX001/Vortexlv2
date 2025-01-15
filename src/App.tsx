@@ -40,7 +40,7 @@ export default function App() {
     ),
   );
 
-  const emoticons = [
+  {/*const emoticons = [
     "(👉ﾟヮﾟ)👉",
     "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
     "ヾ(⌐■_■)ノ♪",
