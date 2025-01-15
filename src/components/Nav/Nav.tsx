@@ -1,5 +1,5 @@
 import { useBoundStore } from "../../store/store";
-import logo from "/favicon.png";
+import logo from "/logo1920.png";
 import notifsImg from "../../assets/bell-svgrepo-com.svg";
 import { ActivityType } from "../../types/GlobalTypes";
 
