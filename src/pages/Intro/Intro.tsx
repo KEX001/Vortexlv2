@@ -55,7 +55,7 @@ export default function Intro() {
         {/* Header Section */}
         <div className="flex flex-col items-start w-full pl-6">
           <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
-            Vortex 🎶
+            Vortex ♪
           </h2>
           <h2 className="mt-2 border-b-2 border-purple-600 text-lg font-bold text-white md:text-xl">
             Attributes
