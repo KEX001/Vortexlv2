@@ -41,15 +41,14 @@ export default function App() {
   );
 
   const MainFallback = () => {
-    const [loadingText, setLoadingText] = useState("Loading your vibes, please wait...");
-    const [showSpinner, setShowSpinner] = useState(false);
+    const [loadingText, setLoadingText] = useState("First launch takes time...");
+    const [showSpinner, setShowSpinner] = useState(true);
 
     useEffect(() => {
-      // Show spinner immediately, ensure the user waits for 10 seconds before content loads
+      // After 40 seconds, change the message
       const timeout = setTimeout(() => {
-        setShowSpinner(true); // Display the spinner after 0 seconds
-        setLoadingText("Your vibes are almost here!"); // Optional message change after 10 seconds
-      }, 10000); // 10 seconds
+        setLoadingText("Your vibes are almost here!"); // Optional message change after 40 seconds
+      }, 40000); // 40 seconds
 
       return () => {
         clearTimeout(timeout);
@@ -58,14 +57,16 @@ export default function App() {
 
     return (
       <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
-        <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
-        {showSpinner && (
-          <div className="loader-4">
-            <div className="box1"></div>
-            <div className="box2"></div>
-            <div className="box3"></div>
-          </div>
-        )}
+        <div className="flex items-center justify-center space-x-4">
+          <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
+          {showSpinner && (
+            <div className="loader-4">
+              <div className="box1"></div>
+              <div className="box2"></div>
+              <div className="box3"></div>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
