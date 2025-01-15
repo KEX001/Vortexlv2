@@ -14,7 +14,7 @@ import fallbackyearly from "../../assets/timely/icons8-timely-yearly.png";
 import { useQuery } from "@tanstack/react-query";
 import { getTimelyData, getWidgetData } from "../../api/requests";
 import { genres, timelyData } from "../../utils/utils";
-import logo from "/Logo.png";
+import logo from "/favicon.png";
 import songfallback from "../../assets/icons8-song-fallback.png";
 
 export default function Home() {
