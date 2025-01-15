@@ -5,7 +5,7 @@ import { ActivityType, TrackDetails } from "../../types/GlobalTypes";
 import Loading from "./Loading";
 import Section from "../../components/Section/Section";
 import play from "../../assets/icons8-play.svg";
-pause from "../../assets/icons8-pause.svg";
+import pause from "../../assets/icons8-pause.svg";
 import Song from "../../components/Song/Song";
 import fallbacktoday from "../../assets/timely/icons8-timely-today.png";
 import fallbackweekly from "../../assets/timely/icons8-timely-weekly.png";
