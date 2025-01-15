@@ -49,11 +49,11 @@ export default function Intro() {
         backgroundSize: "cover",
         backgroundImage: `url(${bgImg})`,
       }}
-      className="flex h-full w-full items-center shadow-inner shadow-black"
+      className="flex h-full w-full items-center justify-center shadow-inner shadow-black"
     >
       <div className="relative mx-auto flex h-auto w-[calc(100%-10%)] flex-col items-center rounded-lg bg-neutral-900 pt-6 pb-4 font-mono sm:w-[550px] shadow-md">
         {/* Header Section */}
-        <div className="flex flex-col h-20 w-full items-start justify-between pl-6">
+        <div className="flex flex-col items-start w-full pl-6">
           <h2 className="text-3xl font-semibold text-purple-500 tracking-wide xl:text-4xl">
             Vᴏʀᴛᴇx ⍱
           </h2>
@@ -63,7 +63,7 @@ export default function Intro() {
         </div>
 
         {/* Features List */}
-        <ul className="mt-4 mb-2 w-full list-disc border-neutral-900 px-10 text-left text-sm font-medium">
+        <ul className="mt-4 mb-2 w-full list-disc px-10 text-left text-sm font-medium">
           <li className="my-2 text-white">A variety of songs from artists, albums, and playlists</li>
           <li className="my-2 text-white">Search across multiple artists, albums, and playlists</li>
           <li className="my-2 text-white">Save songs as favorites and craft unique playlists</li>
@@ -72,7 +72,7 @@ export default function Intro() {
         </ul>
 
         {/* Social Links */}
-        <div className="flex justify-center gap-4 text-muted-foreground md:mt-4">
+        <div className="flex justify-center gap-4 mt-4">
           <a
             aria-label="Telegram"
             href="https://t.me/STORM_TECHH"
@@ -80,7 +80,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <img src="/Telegram_black.png" alt="Telegram" className="size-4" />
+            <img src="/Telegram_black.png" alt="Telegram" className="w-6 h-6" />
           </a>
           <a
             aria-label="Instagram"
@@ -89,7 +89,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <img src="/Instagram_black.png" alt="Instagram" className="size-4" />
+            <img src="/Instagram_black.png" alt="Instagram" className="w-6 h-6" />
           </a>
           <a
             aria-label="Twitter"
@@ -98,7 +98,7 @@ export default function Intro() {
             rel="noopener noreferrer"
             className="duration-200 hover:text-foreground"
           >
-            <img src="/Twitter_black.png" alt="Twitter" className="size-4" />
+            <img src="/Twitter_black.png" alt="Twitter" className="w-6 h-6" />
           </a>
         </div>
 
