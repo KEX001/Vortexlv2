@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./App.css";
 import Layout from "./pages/Layout/Layout";
@@ -52,22 +52,39 @@ export default function App() {
   }
 
   const MainFallback = () => {
+    const [loadingText, setLoadingText] = useState("Loading your vibes, please wait...");
+    const [showSpinner, setShowSpinner] = useState(false);
+
+    useEffect(() => {
+      // Set the spinner to appear after 8 seconds
+      const timeout = setTimeout(() => {
+        setShowSpinner(true);
+        setLoadingText("Your vibes are almost here!");
+      }, 8000); // 8 seconds
+
+      // Cleanup on unmount
+      return () => clearTimeout(timeout);
+    }, []);
+
     return (
-      <div className="flex h-full w-full items-center justify-center bg-neutral-800">
-        <p className="text-xl font-semibold text-emerald-500">
-          Loading vibes {getRandomEmoticons()}
-        </p>
+      <div className="flex flex-col items-center justify-center h-full w-full bg-neutral-800">
+        <p className="text-xl font-semibold text-emerald-500">{loadingText}</p>
+        {showSpinner && (
+          <div className="loader-4">
+            <div className="box1"></div>
+            <div className="box2"></div>
+            <div className="box3"></div>
+          </div>
+        )}
       </div>
     );
   };
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <Suspense fallback={<MainFallback />}>
-          <RouterProvider router={router} />
-        </Suspense>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <Suspense fallback={<MainFallback />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </QueryClientProvider>
   );
 }
