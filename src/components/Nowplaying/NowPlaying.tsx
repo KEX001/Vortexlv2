@@ -28,9 +28,7 @@ export default function NowPlaying() {
   const favorites = useBoundStore((state) => state.favorites);
   const removeFavorite = useBoundStore((state) => state.removeFavorite);
   const setIsPlaying = useBoundStore((state) => state.setIsPlaying);
-  const removeFromUserPlaylist = useBoundStore(
-    (state) => state.removeFromUserPlaylist,
-  );
+  const removeFromUserPlaylist = useBoundStore((state) => state.removeFromUserPlaylist);
   const setCreationTrack = useBoundStore((state) => state.setCreationTrack);
   const setRevealCreation = useBoundStore((state) => state.setRevealCreation);
   const isShuffling = useBoundStore((state) => state.isShuffling);
@@ -42,37 +40,42 @@ export default function NowPlaying() {
   const wavesurfer = useRef<WaveSurfer | null>(null);
   let songIndex = nowPlaying.queue.songs?.findIndex(
     (song: TrackDetails) => song.id === nowPlaying.track?.id,
-  ); //current index of song in queue
+  ); // current index of song in queue
+
   const formatTime = (seconds: number) =>
     [seconds / 60, seconds % 60]
       .map((v) => `0${Math.floor(v)}`.slice(-2))
       .join(":");
+
   const playlist = library.userPlaylists.find((obj) => {
     return obj.songs.find((song) => {
       return song.id === nowPlaying.track?.id;
     });
   });
+
   function removeFromPlaylist(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     playlistid: number,
   ) {
     e.preventDefault();
     e.stopPropagation();
-    nowPlaying.track &&
-      removeFromUserPlaylist(playlistid, nowPlaying.track?.id);
+    nowPlaying.track && removeFromUserPlaylist(playlistid, nowPlaying.track?.id);
   }
+
   function handlePlay(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     e.stopPropagation();
     wavesurfer.current?.play();
     setIsPlaying(true);
   }
+
   function handlePause(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     e.stopPropagation();
     wavesurfer.current?.pause();
     setIsPlaying(false);
   }
+
   function revealTrackMenu(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
     e.preventDefault();
@@ -82,7 +85,6 @@ export default function NowPlaying() {
 
   function playOrder() {
     if (isShuffling === false) {
-      console.log(songIndex);
       songIndex && setNowPlaying(nowPlaying.queue.songs[songIndex]);
     } else {
       const randomIndex = Math.floor(
@@ -128,7 +130,6 @@ export default function NowPlaying() {
   useEffect(() => {
     if (innerWidth > 640) {
       nowPlaying.track && setHistory(nowPlaying.track);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       wavesurfer.current = WaveSurfer.create({
         container: "#desktopWave",
         autoplay: true,
@@ -147,9 +148,6 @@ export default function NowPlaying() {
         duration: Number(nowPlaying.track?.duration),
         url: nowPlaying.track?.downloadUrl[4]?.url,
       });
-      // nowPlaying.track &&
-      //   wavesurfer.current?.load(nowPlaying.track.downloadUrl[4]?.url);
-      // wavesurfer.current?.seekTo(0);
     }
     wavesurfer.current?.on("redrawcomplete", () => {
       setIsPlaying(true);
@@ -169,202 +167,255 @@ export default function NowPlaying() {
         playOrder();
       }
     });
+
     return () => {
       wavesurfer.current?.destroy();
       wavesurfer.current?.stop();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nowPlaying.track?.id]);
 
   return (
-<div className="absolute bottom-0 hidden h-fit w-full justify-between bg-black sm:flex">
-  <div className="flex h-full w-[30%] max-w-[300px] items-center justify-center p-2.5">
-    <img
-      src={
-        nowPlaying.track && nowPlaying.track.id !== ""
-          ? nowPlaying.track?.image[2]?.url
-          : songfallback
-      }
-      id="songImg"
-      alt="song-img"
-      onError={(e) => (e.currentTarget.src = songfallback)}
-      className="mr-3 h-[50px] w-[50px] flex-shrink-0 rounded-md"
-    />
-    <div className="flex h-full w-full max-w-[300px] flex-col items-start justify-center overflow-hidden text-ellipsis">
-      <h2 className="line-clamp-1 whitespace-nowrap text-sm text-white">
-        {nowPlaying.track?.name}
-      </h2>
-      <p className="line-clamp-1 whitespace-nowrap text-xs text-neutral-400">
-        {nowPlaying.track?.artists.all.map((artist: ArtistInSong) => artist.name)}
-      </p>
-    </div>
-  </div>
-  <div className="flex h-full w-auto flex-col items-center justify-evenly p-1.5 sm:w-[40%]">
-    {/* Controls */}
-    <div className="flex w-[250px] items-center justify-around pt-0.5">
-      {isShuffling ? (
-        <button
-          type="button"
-          style={{ border: "none", outline: "none" }}
-          className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsShuffling(false);
-          }}
-          disabled={nowPlaying.queue.songs.length === 0}
-        >
-          <img src={random} alt="random" className="h-[20px] w-[20px] bg-transparent" />
-        </button>
-      ) : (
-        <button
-          type="button"
-          style={{ border: "none", outline: "none" }}
-          className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsShuffling(true);
-          }}
-          disabled={nowPlaying.queue.songs.length === 0}
-        >
-          <img src={shuffle} alt="shuffle" className="h-[20px] w-[20px] bg-transparent" />
-        </button>
-      )}
-      <button
-        type="button"
-        onClick={(e) => handlePrevious(e)}
-        style={{ border: "none", outline: "none" }}
-        className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-        disabled={nowPlaying.queue.songs.length === 0}
-      >
-        <img src={previous} alt="previous" className="h-[28px] w-[28px] bg-transparent" />
-      </button>
-      {nowPlaying.isPlaying === true ? (
-        <button
-          type="button"
-          onClick={(e) => handlePause(e)}
-          style={{ border: "none", outline: "none" }}
-          className={`h-auto w-auto rounded-full border-none bg-neutral-100 p-1 outline-none disabled:cursor-not-allowed disabled:bg-neutral-600`}
-          disabled={!nowPlaying.track?.id}
-        >
-          <img src={pause} alt="pause" className={`h-[25px] w-[25px] ${nowPlaying.isPlaying ? "pl-0" : "pl-0.5"}`} />
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={(e) => handlePlay(e)}
-          style={{ border: "none", outline: "none" }}
-          className={`h-auto w-auto rounded-full border-none bg-neutral-100 p-1 outline-none disabled:cursor-not-allowed disabled:bg-neutral-600`}
-          disabled={!nowPlaying.track?.id}
-        >
-          <img src={play} alt="play" className={`h-[25px] w-[25px] ${nowPlaying.isPlaying ? "pl-0" : "pl-0.5"}`} />
-        </button>
-      )}
-      <button
-        type="button"
-        className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-        style={{ border: "none", outline: "none" }}
-        onClick={(e) => handleNext(e)}
-        disabled={nowPlaying.queue.songs.length === 0}
-      >
-        <img src={next} alt="next" className="h-[28px] w-[28px] bg-transparent" />
-      </button>
-      <button
-        type="button"
-        className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-        disabled={true}
-      >
-        <img src={replay} alt="replay" className="h-[23px] w-[23px] bg-transparent" />
-      </button>
-    </div>
-
-    {/* Progress */}
-    <div className="mt-1 flex h-5 w-[350px] items-center justify-between lg:w-[500px] xl:w-[700px]">
-      <p className="h-full w-[50px] text-center text-[12px] text-white">
-        {currentTime ? formatTime(currentTime) : "0:00"}
-      </p>
-      {/* Waveform */}
-      <div className="mx-auto mb-0.5 flex h-auto w-[85%] items-center justify-center overflow-hidden">
-        <div id="desktopWave" className="h-full w-full"></div>
-      </div>
-      <p className="h-full w-[50px] text-center text-[12px] text-white">
-        {nowPlaying.track?.duration
-          ? secondsToHMS(Number(nowPlaying.track?.duration))
-          : "--:--"}
-      </p>
-    </div>
-  </div>
-  <div className="flex h-full w-[30%] max-w-[290px] flex-col items-end justify-between p-2">
-    <div className="flex h-auto w-auto max-w-32 items-center">
-      <button
-        type="button"
-        style={{ border: "none", outline: "none" }}
-        className={`${!playlist ? "block" : "hidden"} border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]`}
-        onClick={(e) => revealTrackMenu(e)}
-        disabled={nowPlaying.track?.id === ""}
-      >
-        <img src={add} alt="add-to-playlist" className="h-[20px] w-[20px] bg-transparent" />
-      </button>
-      {playlist?.id && (
-        <button
-          style={{ border: "none", outline: "none" }}
-          type="button"
-          onClick={(e) => playlist && removeFromPlaylist(e, playlist.id)}
-          className="border bg-transparent p-0"
-        >
-          <img src={tick} alt="tick" className="h-[20px] w-[20px]" />
-        </button>
-      )}
-      {favorites.songs?.some((song) => song.id === nowPlaying.track?.id) ? (
-        <button
-          type="button"
-          onClick={() => nowPlaying.track && removeFavorite(nowPlaying.track?.id)}
-          style={{ border: "none", outline: "none" }}
-          className="mx-3 border-none bg-transparent p-0 outline-none"
-        >
-          <img src={favorited} alt="favorite" className="h-[22px] w-[22px] bg-transparent" />
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={() => nowPlaying.track && setFavoriteSong(nowPlaying.track)}
-          style={{ border: "none", outline: "none" }}
-          className="mx-3 border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-          disabled={nowPlaying.track?.id === ""}
-        >
-          <img src={favorite} alt="favorite" className="h-[22px] w-[22px] bg-transparent" />
-        </button>
-      )}
-      <div className="border-none bg-transparent p-0 outline-none">
-        <img src={speaker} alt="favorite" className="h-[22px] w-[22px] bg-transparent" />
-      </div>
-    </div>
-
-    <div className="mt-1 flex h-5 w-[350px] items-center justify-between lg:w-[500px] xl:w-[700px]">
-      <p className="h-full w-[50px] text-center text-[12px] text-white">
-        {currentTime ? formatTime(currentTime) : "0:00"}
-      </p>
-      {/* Replacing waveform with custom progress bar */}
-      <div className="mx-auto mb-0.5 flex h-auto w-[85%] items-center justify-center overflow-hidden">
-        <input
-          id="progress-bar"
-          type="range"
-          min="0"
-          max={nowPlaying.track?.duration || 100}
-          value={currentTime}
-          step="0.1"
-          onChange={(e) => {
-            const newTime = parseFloat(e.target.value);
-            wavesurfer.current?.seekTo(newTime / nowPlaying.track?.duration);  // Update position in waveform
-            setCurrentTime(newTime);
-          }}
-          style={{ cursor: 'pointer' }}
+    <div className="absolute bottom-0 hidden h-fit w-full justify-between bg-black sm:flex">
+      <div className="flex h-full w-[30%] max-w-[300px] items-center justify-center p-2.5">
+        <img
+          src={
+            nowPlaying.track && nowPlaying.track.id !== ""
+              ? nowPlaying.track?.image[2]?.url
+              : songfallback
+          }
+          id="songImg"
+          alt="song-img"
+          onError={(e) => (e.currentTarget.src = songfallback)}
+          className="mr-3 h-[50px] w-[50px] flex-shrink-0 rounded-md"
         />
+        <div className="flex h-full w-full max-w-[300px] flex-col items-start justify-center overflow-hidden text-ellipsis">
+          <h2 className="line-clamp-1 whitespace-nowrap text-sm text-white">
+            {nowPlaying.track?.name}
+          </h2>
+          <p className="line-clamp-1 whitespace-nowrap text-xs text-neutral-400">
+            {nowPlaying.track?.artists.all.map(
+              (artist: ArtistInSong) => artist.name,
+            )}
+          </p>
+        </div>
       </div>
-      <p className="h-full w-[50px] text-center text-[12px] text-white">
-        {nowPlaying.track?.duration
-          ? secondsToHMS(Number(nowPlaying.track?.duration))
-          : "--:--"}
-      </p>
+
+      <div className="flex h-full w-auto flex-col items-center justify-evenly p-1.5 sm:w-[40%]">
+        {/* Controls */}
+        <div className="flex w-[250px] items-center justify-around pt-0.5">
+          {isShuffling ? (
+            <button
+              type="button"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsShuffling(false);
+              }}
+              disabled={nowPlaying.queue.songs.length === 0}
+            >
+              <img
+                src={random}
+                alt="random"
+                className="h-[20px] w-[20px] bg-transparent"
+              />
+            </button>
+          ) : (
+            <button
+              type="button"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsShuffling(true);
+              }}
+              disabled={nowPlaying.queue.songs.length === 0}
+            >
+              <img
+                src={shuffle}
+                alt="shuffle"
+                className="h-[20px] w-[20px] bg-transparent"
+              />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={(e) => handlePrevious(e)}
+            style={{
+              border: "none",
+              outline: "none",
+            }}
+            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            disabled={nowPlaying.queue.songs.length === 0}
+          >
+            <img
+              src={previous}
+              alt="previous"
+              className="h-[28px] w-[28px] bg-transparent"
+            />
+          </button>
+          {nowPlaying.isPlaying === true ? (
+            <button
+              type="button"
+              onClick={(e) => handlePause(e)}
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className={`h-auto w-auto rounded-full border-none bg-neutral-100 p-1 outline-none disabled:cursor-not-allowed disabled:bg-neutral-600`}
+              disabled={!nowPlaying.track?.id}
+            >
+              <img
+                src={pause}
+                alt="pause"
+                className={`h-[25px] w-[25px] ${
+                  nowPlaying.isPlaying ? "pl-0" : "pl-0.5"
+                }`}
+              />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => handlePlay(e)}
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className={`h-auto w-auto rounded-full border-none bg-neutral-100 p-1 outline-none disabled:cursor-not-allowed disabled:bg-neutral-600`}
+              disabled={!nowPlaying.track?.id}
+            >
+              <img
+                src={play}
+                alt="play"
+                className={`h-[25px] w-[25px] ${
+                  nowPlaying.isPlaying ? "pl-0" : "pl-0.5"
+                }`}
+              />
+            </button>
+          )}
+          <button
+            type="button"
+            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            style={{
+              border: "none",
+              outline: "none",
+            }}
+            onClick={(e) => handleNext(e)}
+            disabled={nowPlaying.queue.songs.length === 0}
+          >
+            <img
+              src={next}
+              alt="next"
+              className="h-[28px] w-[28px] bg-transparent"
+            />
+          </button>
+          <button
+            type="button"
+            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            disabled={true}
+          >
+            <img
+              src={replay}
+              alt="replay"
+              className="h-[23px] w-[23px] bg-transparent"
+            />
+          </button>
+        </div>
+        {/* Progress */}
+        <div className="mt-1 flex h-5 w-[350px] items-center justify-between lg:w-[500px] xl:w-[700px]">
+          <p className="h-full w-[50px] text-center text-[12px] text-white">
+            {currentTime ? formatTime(currentTime) : "0:00"}
+          </p>
+          {/* Waveform */}
+          <div className="mx-auto mb-0.5 flex h-auto w-[85%] items-center justify-center overflow-hidden">
+            <div id="desktopWave" className="h-full w-full"></div>
+          </div>
+          <p className="h-full w-[50px] text-center text-[12px] text-white">
+            {nowPlaying.track?.duration
+              ? secondsToHMS(Number(nowPlaying.track?.duration))
+              : "--:--"}
+          </p>
+        </div>
+      </div>
+
+      <div className="flex h-full w-[30%] max-w-[290px] flex-col items-end justify-between p-2">
+        <div className="flex h-auto w-auto max-w-32 items-center">
+          <button
+            type="button"
+            style={{
+              border: "none",
+              outline: "none",
+            }}
+            className={`${
+              !playlist ? "block" : "hidden"
+            } border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]`}
+            onClick={(e) => revealTrackMenu(e)}
+            disabled={nowPlaying.track?.id === ""}
+          >
+            <img
+              src={add}
+              alt="add"
+              className="h-[25px] w-[25px] bg-transparent"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (favorites.find((song) => song.id === nowPlaying.track?.id)) {
+                nowPlaying.track && removeFavorite(nowPlaying.track?.id);
+              } else {
+                nowPlaying.track && setFavoriteSong(nowPlaying.track);
+              }
+            }}
+            style={{
+              border: "none",
+              outline: "none",
+            }}
+            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            disabled={!nowPlaying.track?.id}
+          >
+            <img
+              src={
+                favorites.find((song) => song.id === nowPlaying.track?.id)
+                  ? favorited
+                  : favorite
+              }
+              alt="favorite"
+              className="h-[28px] w-[28px] bg-transparent"
+            />
+          </button>
+        </div>
+        <div className="flex w-full flex-row justify-between pt-0.5">
+          <div className="flex w-auto items-center justify-center gap-2">
+            <img
+              src={vol}
+              alt="volume"
+              className="h-[20px] w-[20px] bg-transparent"
+            />
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={50}
+              className="h-[3px] w-[150px] rounded-md bg-white/20"
+              step={1}
+            />
+            <img
+              src={high}
+              alt="high"
+              className="h-[20px] w-[20px] bg-transparent"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  );
+}
