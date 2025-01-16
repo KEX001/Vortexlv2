@@ -40,42 +40,37 @@ export default function NowPlaying() {
   const wavesurfer = useRef<WaveSurfer | null>(null);
   let songIndex = nowPlaying.queue.songs?.findIndex(
     (song: TrackDetails) => song.id === nowPlaying.track?.id,
-  ); // current index of song in queue
-
+  );
   const formatTime = (seconds: number) =>
     [seconds / 60, seconds % 60]
       .map((v) => `0${Math.floor(v)}`.slice(-2))
       .join(":");
-
   const playlist = library.userPlaylists.find((obj) => {
     return obj.songs.find((song) => {
       return song.id === nowPlaying.track?.id;
     });
   });
-
   function removeFromPlaylist(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     playlistid: number,
   ) {
     e.preventDefault();
     e.stopPropagation();
-    nowPlaying.track && removeFromUserPlaylist(playlistid, nowPlaying.track?.id);
+    nowPlaying.track &&
+      removeFromUserPlaylist(playlistid, nowPlaying.track?.id);
   }
-
   function handlePlay(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     e.stopPropagation();
     wavesurfer.current?.play();
     setIsPlaying(true);
   }
-
   function handlePause(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     e.stopPropagation();
     wavesurfer.current?.pause();
     setIsPlaying(false);
   }
-
   function revealTrackMenu(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
     e.preventDefault();
@@ -85,6 +80,7 @@ export default function NowPlaying() {
 
   function playOrder() {
     if (isShuffling === false) {
+      console.log(songIndex);
       songIndex && setNowPlaying(nowPlaying.queue.songs[songIndex]);
     } else {
       const randomIndex = Math.floor(
@@ -167,7 +163,6 @@ export default function NowPlaying() {
         playOrder();
       }
     });
-
     return () => {
       wavesurfer.current?.destroy();
       wavesurfer.current?.stop();
@@ -199,7 +194,6 @@ export default function NowPlaying() {
           </p>
         </div>
       </div>
-
       <div className="flex h-full w-auto flex-col items-center justify-evenly p-1.5 sm:w-[40%]">
         {/* Controls */}
         <div className="flex w-[250px] items-center justify-around pt-0.5">
@@ -302,10 +296,6 @@ export default function NowPlaying() {
           <button
             type="button"
             className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-            style={{
-              border: "none",
-              outline: "none",
-            }}
             onClick={(e) => handleNext(e)}
             disabled={nowPlaying.queue.songs.length === 0}
           >
@@ -315,26 +305,25 @@ export default function NowPlaying() {
               className="h-[28px] w-[28px] bg-transparent"
             />
           </button>
-          <button
-            type="button"
-            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-            disabled={true}
-          >
-            <img
-              src={replay}
-              alt="replay"
-              className="h-[23px] w-[23px] bg-transparent"
-            />
-          </button>
         </div>
+
         {/* Progress */}
         <div className="mt-1 flex h-5 w-[350px] items-center justify-between lg:w-[500px] xl:w-[700px]">
           <p className="h-full w-[50px] text-center text-[12px] text-white">
             {currentTime ? formatTime(currentTime) : "0:00"}
           </p>
-          {/* Waveform */}
+          {/* Custom Progress Bar */}
           <div className="mx-auto mb-0.5 flex h-auto w-[85%] items-center justify-center overflow-hidden">
-            <div id="desktopWave" className="h-full w-full"></div>
+            <input
+              type="range"
+              id="progress-bar"
+              min={0}
+              max={nowPlaying.track?.duration || 100}
+              step={0.1}
+              value={currentTime}
+              onChange={(e) => wavesurfer.current?.seekTo(Number(e.target.value) / nowPlaying.track?.duration)}
+              disabled={nowPlaying.track?.id === ""}
+            />
           </div>
           <p className="h-full w-[50px] text-center text-[12px] text-white">
             {nowPlaying.track?.duration
@@ -343,75 +332,51 @@ export default function NowPlaying() {
           </p>
         </div>
       </div>
-
-      <div className="flex h-full w-[30%] max-w-[290px] flex-col items-end justify-between p-2">
-        <div className="flex h-auto w-auto max-w-32 items-center">
-          <button
-            type="button"
-            style={{
-              border: "none",
-              outline: "none",
-            }}
-            className={`${
-              !playlist ? "block" : "hidden"
-            } border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]`}
-            onClick={(e) => revealTrackMenu(e)}
-            disabled={nowPlaying.track?.id === ""}
-          >
-            <img
-              src={add}
-              alt="add"
-              className="h-[25px] w-[25px] bg-transparent"
-            />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (favorites.find((song) => song.id === nowPlaying.track?.id)) {
-                nowPlaying.track && removeFavorite(nowPlaying.track?.id);
-              } else {
-                nowPlaying.track && setFavoriteSong(nowPlaying.track);
-              }
-            }}
-            style={{
-              border: "none",
-              outline: "none",
-            }}
-            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
-            disabled={!nowPlaying.track?.id}
-          >
-            <img
-              src={
-                favorites.find((song) => song.id === nowPlaying.track?.id)
-                  ? favorited
-                  : favorite
-              }
-              alt="favorite"
-              className="h-[28px] w-[28px] bg-transparent"
-            />
-          </button>
-        </div>
-        <div className="flex w-full flex-row justify-between pt-0.5">
-          <div className="flex w-auto items-center justify-center gap-2">
-            <img
-              src={vol}
-              alt="volume"
-              className="h-[20px] w-[20px] bg-transparent"
-            />
+      <div className="flex h-full w-[30%] items-center justify-end pr-2.5">
+        <div className="flex flex-col justify-center p-2">
+          {/* Volume Control */}
+          <div className="relative flex justify-center">
+            <div className="absolute right-0 top-[10px]">
+              {nowPlaying.isMuted ? (
+                <button
+                  onClick={() => {
+                    wavesurfer.current?.setVolume(1);
+                    wavesurfer.current?.toggleMute();
+                  }}
+                  className="h-[24px] w-[24px]"
+                >
+                  <img
+                    src={mute}
+                    alt="volume"
+                    className="h-[20px] w-[20px] bg-transparent"
+                  />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    wavesurfer.current?.setVolume(0);
+                    wavesurfer.current?.toggleMute();
+                  }}
+                  className="h-[24px] w-[24px]"
+                >
+                  <img
+                    src={vol}
+                    alt="volume"
+                    className="h-[20px] w-[20px] bg-transparent"
+                  />
+                </button>
+              )}
+            </div>
             <input
               type="range"
-              min={0}
-              max={100}
-              value={50}
-              className="h-[3px] w-[150px] rounded-md bg-white/20"
-              step={1}
-            />
-            <img
-              src={high}
-              alt="high"
-              className="h-[20px] w-[20px] bg-transparent"
+              min="0"
+              max="1"
+              step="0.01"
+              value={wavesurfer.current?.getVolume() || 1}
+              onChange={(e) =>
+                wavesurfer.current?.setVolume(parseFloat(e.target.value))
+              }
+              className="h-[4px] w-[120px] bg-neutral-400"
             />
           </div>
         </div>
