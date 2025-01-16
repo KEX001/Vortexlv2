@@ -43,6 +43,7 @@ export default function Progress({
     <div className="flex w-full items-center justify-between">
       <p className="pr-2 text-[12px] text-white">{currentTime}</p>
       <div className="flex-1 mx-2">
+        {/* The custom progress bar */}
         <input
           id="progress-bar"
           type="range"
