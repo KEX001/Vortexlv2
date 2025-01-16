@@ -6,15 +6,10 @@ import "../App.css"; // Import the CSS file with progress bar styles
 
 export default function Progress({
   formatTime,
-  seconds,
-  progressRef,
   wavesurfer,
 }: {
   formatTime: (seconds: number) => string;
-  seconds: number;
   wavesurfer: WaveSurfer;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  progressRef: any;
 }) {
   const { nowPlaying } = useBoundStore();
   const [currentTime, setCurrentTime] = useState("0:00");
@@ -30,11 +25,9 @@ export default function Progress({
     };
 
     wavesurfer.on("audioprocess", updateProgress);
-    wavesurfer.on("seek", updateProgress);
 
     return () => {
       wavesurfer.un("audioprocess", updateProgress);
-      wavesurfer.un("seek", updateProgress);
     };
   }, [wavesurfer, formatTime]);
 
