@@ -24,8 +24,6 @@ import artistfallback from "../../assets/icons8-artist-fallback.png";
 import { useNavigate } from "react-router-dom";
 
 export default function MobilePlayer() {
-  const [currentTrackImage, setCurrentTrackImage] = useState<string | null>(null);
-export default function MobilePlayer() {
   const library = useBoundStore((state) => state.library);
   const nowPlaying = useBoundStore((state) => state.nowPlaying);
   const setShowPlayer = useBoundStore((state) => state.setShowPlayer);
@@ -181,19 +179,6 @@ export default function MobilePlayer() {
     }
   }, [nowPlaying.isPlaying]);
 
-  useEffect(() => {
-    async function getTrackImage() {
-      const trackData = await fetchCurrentTrack();
-      if (trackData && trackData.item) {
-        // Get the track image (typically size 640px or 300px)
-        const trackImage = trackData.item?.album.images[2]?.url; // or choose the image size you prefer
-        setCurrentTrackImage(trackImage);
-      }
-    }
-
-    getTrackImage();
-  }, []);
-
   function playOrder() {
     if (isShuffling === false) {
       setIsPlaying(true);
@@ -287,13 +272,13 @@ export default function MobilePlayer() {
         <img src={down} alt="down" className="h-[28px] w-[28px]" />
       </button>
       <img
-        src={currentTrackImage || songfallback}
+        src={nowPlaying.track ? nowPlaying.track.image[2]?.url : songfallback}
         onError={(e) => (e.currentTarget.src = songfallback)}
-        alt="Track Image"
+        alt="image"
         width={500}
         height={500}
         className="mx-auto h-[500px] w-[500px] rounded-xl rounded-t-lg bg-fixed"
-        />
+      />
       <div className="flex h-auto w-full flex-col items-center justify-start invert-0">
         <div className="flex h-auto w-full justify-between">
           <div className="line-clamp-3 flex h-auto w-[75%] flex-col items-start text-ellipsis p-3 px-4">
@@ -539,10 +524,15 @@ export default function MobilePlayer() {
           />
         </button>
       </div>
-      <div className="mx-auto mt-6 w-[90%]">
-        {/* Removed the Primary Artists section */}
+      <div className="mx-auto mt-6 w-full min-h-[calc(100vh-50px)]">
+        <h2 className="mb-2 text-base font-normal text-white">Lead Artists</h2>
+        <ul className="mx-auto flex h-full w-full flex-shrink-0 flex-col items-start justify-start rounded-t-xl bg-neutral-950 px-4 py-2">
+          {artists &&
+            artists.map((artist: ArtistType) => (
+              <SongArtist key={artist?.id || ""} artist={artist} />
+            ))}
+        </ul>
       </div>
     </div>
   );
-}
 }
