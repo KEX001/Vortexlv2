@@ -182,16 +182,12 @@ export default function MobilePlayer() {
   }, [nowPlaying.isPlaying]);
 
   useEffect(() => {
-    async function getTrackImage() {
-      const trackData = await fetchCurrentTrack();
-      if (trackData && trackData.item) {
-        // Get the track image (typically size 640px or 300px)
-        const trackImage = trackData.item?.album.images[2]?.url; // or choose the image size you prefer
-        setCurrentTrackImage(trackImage);
-      }
-    }
+    const getTrack = async () => {
+      const currentTrack = await fetchCurrentTrack();
+      setTrack(currentTrack); // store the current track details
+    };
 
-    getTrackImage();
+    getTrack();
   }, []);
 
   function playOrder() {
