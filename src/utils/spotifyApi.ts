@@ -36,6 +36,6 @@ const getAccessToken = async () => {
     //return null; // In case no track is playing
   //}
 
-  const data = await response.json();
+{/* const data = await response.json();
   return data;
-};
+};*/}
