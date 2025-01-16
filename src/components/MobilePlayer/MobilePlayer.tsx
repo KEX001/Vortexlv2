@@ -540,16 +540,9 @@ export default function MobilePlayer() {
         </button>
       </div>
       <div className="mx-auto mt-6 w-[90%]">
-        <h2 className="mb-2 text-base font-normal text-white">
-          Primary artists
-        </h2>
-        <ul className="mx-auto flex h-auto w-full flex-shrink-0 flex-col items-start justify-center rounded-xl bg-neutral-950 px-4 py-2">
-          {artists &&
-            artists.map((artist: ArtistType) => (
-              <SongArtist key={artist?.id || ""} artist={artist} />
-            ))}
-        </ul>
+        {/* Removed the Primary Artists section */}
       </div>
     </div>
   );
+}
 }
