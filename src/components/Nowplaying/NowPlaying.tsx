@@ -28,7 +28,9 @@ export default function NowPlaying() {
   const favorites = useBoundStore((state) => state.favorites);
   const removeFavorite = useBoundStore((state) => state.removeFavorite);
   const setIsPlaying = useBoundStore((state) => state.setIsPlaying);
-  const removeFromUserPlaylist = useBoundStore((state) => state.removeFromUserPlaylist);
+  const removeFromUserPlaylist = useBoundStore(
+    (state) => state.removeFromUserPlaylist,
+  );
   const setCreationTrack = useBoundStore((state) => state.setCreationTrack);
   const setRevealCreation = useBoundStore((state) => state.setRevealCreation);
   const isShuffling = useBoundStore((state) => state.isShuffling);
@@ -40,7 +42,7 @@ export default function NowPlaying() {
   const wavesurfer = useRef<WaveSurfer | null>(null);
   let songIndex = nowPlaying.queue.songs?.findIndex(
     (song: TrackDetails) => song.id === nowPlaying.track?.id,
-  );
+  ); //current index of song in queue
   const formatTime = (seconds: number) =>
     [seconds / 60, seconds % 60]
       .map((v) => `0${Math.floor(v)}`.slice(-2))
@@ -126,6 +128,7 @@ export default function NowPlaying() {
   useEffect(() => {
     if (innerWidth > 640) {
       nowPlaying.track && setHistory(nowPlaying.track);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       wavesurfer.current = WaveSurfer.create({
         container: "#desktopWave",
         autoplay: true,
@@ -144,6 +147,9 @@ export default function NowPlaying() {
         duration: Number(nowPlaying.track?.duration),
         url: nowPlaying.track?.downloadUrl[4]?.url,
       });
+      // nowPlaying.track &&
+      //   wavesurfer.current?.load(nowPlaying.track.downloadUrl[4]?.url);
+      // wavesurfer.current?.seekTo(0);
     }
     wavesurfer.current?.on("redrawcomplete", () => {
       setIsPlaying(true);
@@ -167,6 +173,7 @@ export default function NowPlaying() {
       wavesurfer.current?.destroy();
       wavesurfer.current?.stop();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nowPlaying.track?.id]);
 
   return (
@@ -195,7 +202,7 @@ export default function NowPlaying() {
         </div>
       </div>
       <div className="flex h-full w-auto flex-col items-center justify-evenly p-1.5 sm:w-[40%]">
-        {/* Controls */}
+        {/*Controls */}
         <div className="flex w-[250px] items-center justify-around pt-0.5">
           {isShuffling ? (
             <button
@@ -296,6 +303,10 @@ export default function NowPlaying() {
           <button
             type="button"
             className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            style={{
+              border: "none",
+              outline: "none",
+            }}
             onClick={(e) => handleNext(e)}
             disabled={nowPlaying.queue.songs.length === 0}
           >
@@ -305,25 +316,26 @@ export default function NowPlaying() {
               className="h-[28px] w-[28px] bg-transparent"
             />
           </button>
+          <button
+            type="button"
+            className="border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+            disabled={true}
+          >
+            <img
+              src={replay}
+              alt="replay"
+              className="h-[23px] w-[23px] bg-transparent"
+            />
+          </button>
         </div>
-
-        {/* Progress */}
+        {/*Progress */}
         <div className="mt-1 flex h-5 w-[350px] items-center justify-between lg:w-[500px] xl:w-[700px]">
           <p className="h-full w-[50px] text-center text-[12px] text-white">
             {currentTime ? formatTime(currentTime) : "0:00"}
           </p>
-          {/* Custom Progress Bar */}
+          {/*Waveform*/}
           <div className="mx-auto mb-0.5 flex h-auto w-[85%] items-center justify-center overflow-hidden">
-            <input
-              type="range"
-              id="progress-bar"
-              min={0}
-              max={nowPlaying.track?.duration || 100}
-              step={0.1}
-              value={currentTime}
-              onChange={(e) => wavesurfer.current?.seekTo(Number(e.target.value) / nowPlaying.track?.duration)}
-              disabled={nowPlaying.track?.id === ""}
-            />
+            <div id="desktopWave" className="h-full w-full"></div>
           </div>
           <p className="h-full w-[50px] text-center text-[12px] text-white">
             {nowPlaying.track?.duration
@@ -332,53 +344,116 @@ export default function NowPlaying() {
           </p>
         </div>
       </div>
-      <div className="flex h-full w-[30%] items-center justify-end pr-2.5">
-        <div className="flex flex-col justify-center p-2">
-          {/* Volume Control */}
-          <div className="relative flex justify-center">
-            <div className="absolute right-0 top-[10px]">
-              {nowPlaying.isMuted ? (
-                <button
-                  onClick={() => {
-                    wavesurfer.current?.setVolume(1);
-                    wavesurfer.current?.toggleMute();
-                  }}
-                  className="h-[24px] w-[24px]"
-                >
-                  <img
-                    src={mute}
-                    alt="volume"
-                    className="h-[20px] w-[20px] bg-transparent"
-                  />
-                </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    wavesurfer.current?.setVolume(0);
-                    wavesurfer.current?.toggleMute();
-                  }}
-                  className="h-[24px] w-[24px]"
-                >
-                  <img
-                    src={vol}
-                    alt="volume"
-                    className="h-[20px] w-[20px] bg-transparent"
-                  />
-                </button>
-              )}
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={wavesurfer.current?.getVolume() || 1}
-              onChange={(e) =>
-                wavesurfer.current?.setVolume(parseFloat(e.target.value))
+      <div className="flex h-full w-[30%] max-w-[290px] flex-col items-end justify-between p-2">
+        <div className="flex h-auto w-auto max-w-32 items-center">
+          <button
+            type="button"
+            style={{
+              border: "none",
+              outline: "none",
+            }}
+            className={`${
+              !playlist ? "block" : "hidden"
+            } border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]`}
+            onClick={(e) => revealTrackMenu(e)}
+            disabled={nowPlaying.track?.id === ""}
+          >
+            <img
+              src={add}
+              alt="add-to-playlist"
+              className="h-[20px] w-[20px] bg-transparent"
+            />
+          </button>
+          {playlist?.id && (
+            <button
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              type="button"
+              onClick={(e) => playlist && removeFromPlaylist(e, playlist.id)}
+              className="border bg-transparent p-0"
+            >
+              <img src={tick} alt="tick" className="h-[20px] w-[20px]" />
+            </button>
+          )}
+          {favorites.songs?.some((song) => song.id === nowPlaying.track?.id) ? (
+            <button
+              type="button"
+              onClick={() =>
+                nowPlaying.track && removeFavorite(nowPlaying.track?.id)
               }
-              className="h-[4px] w-[120px] bg-neutral-400"
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className="mx-3 border-none bg-transparent p-0 outline-none"
+            >
+              <img
+                src={favorited}
+                alt="favorite"
+                className="h-[22px] w-[22px] bg-transparent"
+              />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() =>
+                nowPlaying.track && setFavoriteSong(nowPlaying.track)
+              }
+              style={{
+                border: "none",
+                outline: "none",
+              }}
+              className="mx-3 border-none bg-transparent p-0 outline-none disabled:cursor-not-allowed disabled:invert-[0.5]"
+              disabled={nowPlaying.track?.id === ""}
+            >
+              <img
+                src={favorite}
+                alt="favorite"
+                className="h-[22px] w-[22px] bg-transparent"
+              />
+            </button>
+          )}
+          <div className="border-none bg-transparent p-0 outline-none">
+            <img
+              src={speaker}
+              alt="favorite"
+              className="h-[22px] w-[22px] bg-transparent"
             />
           </div>
+        </div>
+        <div className="mt-1.5 flex h-fit w-auto items-center justify-end">
+          <input
+            type="range"
+            name="song-volume"
+            id="volumeSlider"
+            min={0}
+            className="h-[3px] w-full appearance-none transition-all ease-linear disabled:cursor-not-allowed"
+            max={1}
+            step={0.1}
+            aria-label="Volume"
+            value={wavesurfer.current?.getVolume()}
+            onChange={(e) =>
+              wavesurfer.current?.setVolume(Number(e.target.value))
+            }
+            disabled={nowPlaying.track?.id === ""}
+          />
+          <img
+            src={
+              wavesurfer.current && wavesurfer.current?.getVolume() > 0.1
+                ? wavesurfer.current?.getVolume() < 0.7
+                  ? vol
+                  : high
+                : mute
+            }
+            alt="volume"
+            className={`-mr-1 ml-1 h-[28px] w-[28px] bg-transparent ${
+              nowPlaying.track?.id === "" ? "invert-[0.4]" : ""
+            } ${
+              wavesurfer.current?.getVolume() === 0 && "invert-[0.5]"
+            } disabled:cursor-not-allowed disabled:bg-neutral-900`}
+          />
         </div>
       </div>
     </div>
